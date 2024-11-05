@@ -15,12 +15,6 @@ import ru.kata.spring.boot_security.demo.service.UserServiceDetailisImp;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserServiceDetailisImp userServiceDetailisImp;
-
-    @Autowired
-    public UserController(UserServiceDetailisImp userServiceDetailisImp) {
-        this.userServiceDetailisImp = userServiceDetailisImp;
-    }
 
     @GetMapping
     public String userInfo(Model model, @AuthenticationPrincipal UserDetailsImp userDetail) {

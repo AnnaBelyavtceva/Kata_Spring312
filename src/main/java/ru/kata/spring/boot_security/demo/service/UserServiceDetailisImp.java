@@ -14,6 +14,8 @@ import ru.kata.spring.boot_security.demo.security.UserDetailsImp;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -42,38 +44,49 @@ public class UserServiceDetailisImp implements UserServiceDetailis {
     return new UserDetailsImp(user.get());
     }
 
+    @Override
     @Transactional
     public User findUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
         return user.orElse(new User());
     }
+    @Override
     @Transactional
     public List<User> allUsers() {
         return userRepository.findAll();
     }
+
+    @Override
     @Transactional
     public void delete(Long id) {
         if (userRepository.findById(id).isPresent()) {
             userRepository.deleteById(id);
         }
     }
-    @Transactional
-    public void save(User user) {
-        Optional<User> userFromDB = userRepository.findByUsername(user.getUsername());
 
-        if (userFromDB != null) {
-            return;
-        }
-        user.setRoles(Collections.singleton(new Role( "ROLE_USER",1L)));
-        userRepository.save(user);
-    }
-
-
+    @Override
     @Transactional
     public void register(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+
     }
+    @Override
+    @Transactional
+    public void updateUser(User updateUser) {
+        User user = userRepository.findById(updateUser.getId()).orElseThrow(()
+                -> new IllegalArgumentException("User not found"));
+        if (updateUser.getPassword() != null && !updateUser.getPassword().isBlank()
+                && !passwordEncoder.matches(updateUser.getPassword(), user.getPassword())) {
+
+            updateUser.setPassword(passwordEncoder.encode(updateUser.getPassword()));
+        }  else {
+
+        updateUser.setPassword(user.getPassword());
+    }
+        userRepository.save(updateUser);
+    }
+
 
 }
 

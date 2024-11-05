@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +22,11 @@ public class AdminController {
     private final RoleServiceImp roleServiceImp;
 
 
+
     @Autowired
-    public AdminController(UserServiceDetailis userServiceDetailis, RoleServiceImp roleServiceImp) {
+    public AdminController(UserServiceDetailis userServiceDetailis, RoleServiceImp roleServiceImp, PasswordEncoder passwordEncoder) {
         this.userServiceDetailis = userServiceDetailis;
         this.roleServiceImp = roleServiceImp;
-
     }
 
 
@@ -67,7 +68,7 @@ public class AdminController {
 
     @PostMapping("/updateUser")
     public String updateUser(@ModelAttribute("user") User user) {
-        userServiceDetailis.register(user);
+        userServiceDetailis.updateUser(user);
         return "redirect:/admin";
     }
 }
