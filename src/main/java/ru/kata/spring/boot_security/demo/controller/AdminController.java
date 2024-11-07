@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.*;
 import java.util.List;
 
